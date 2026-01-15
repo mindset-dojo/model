@@ -1,0 +1,20 @@
+{%- assign doc = include.item | default: include.post -%}
+  {%- assign practice_title = doc.title | default: "Practice" -%}
+  {%- assign practice_url = doc.url | relative_url -%}
+  {%- assign icon_class = doc.icon | default: doc.fa_icon | default: "fa-solid fa-shapes" -%}
+  {%- assign icon_class = icon_class | strip -%}
+  {%- unless icon_class contains 'fa-solid' or icon_class contains 'fa-regular' or icon_class contains 'fa-brands' -%}
+    {%- assign icon_class = "fa-solid " | append: icon_class -%}
+  {%- endunless -%}
+  {%- assign desc_source = doc.card_excerpt | default: doc.excerpt | default: doc.summary | default: doc.description -%}
+  {%- assign desc_html = desc_source | default: "" | markdownify -%}
+  {%- assign desc_text = desc_html | strip_html | strip_newlines | truncate: 160 -%}
+  <article class="md-card practice-card">
+    <div class="practice-card-icon" aria-hidden="true">
+      <i class="{{ icon_class }}"></i>
+    </div>
+    <h3><a class="card-link card-link-title" href="{{ practice_url }}">{{ practice_title }}</a></h3>
+    {%- if desc_text != "" -%}
+      <p>{{ desc_text }}</p>
+    {%- endif -%}
+  </article>

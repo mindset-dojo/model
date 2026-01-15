@@ -1,0 +1,20 @@
+---
+title: Welcome
+title_mark: Welcome
+meta: Orientation to how change is lived during the cloud migration
+description: |
+  By the time a transformation is announced, most people already understand what is supposed to change. What’s harder is seeing how that change is meant to be lived in everyday work — across teams, decisions, and moments of pressure.
+
+  This site focuses on that gap by making visible the practices people are using and the experiences that come with them. Some people want to explore the work itself and see where it applies. Others want to see who is already involved and how they’re approaching it.
+sections:
+  - type: markdown
+    data:
+      field: description
+  - type: ctas
+    data:
+      items:
+        - label: Explore Practices 
+          ref: practices
+        - label: Meet Practitioners
+          ref: practitioners
+...

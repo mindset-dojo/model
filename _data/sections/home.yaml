@@ -1,0 +1,20 @@
+---
+title: Practicing Transformation
+title_mark: Transformation
+meta: Shared reference for integrating change during the cloud migration at ExampleCo
+description: |
+  You’re already aware of the cloud migration underway here at ExampleCo.
+
+  The business pressures and stakes are well understood.
+
+  What’s less clear is how we actually get there — how work, decisions, and responsibility need to change for the transformation to stick.
+sections:
+  - type: markdown
+    data:
+      field: description
+  - type: ctas
+    data:
+      items:
+        - label: Learn More
+          ref: welcome
+...

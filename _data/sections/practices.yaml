@@ -1,0 +1,21 @@
+---
+title: Practices
+title_mark: Practices
+meta: Core practices that shape how work changes during the cloud migration
+description: |
+  As the cloud migration at ExampleCo takes hold, how we work will change in concrete ways.
+
+  The practices that support that shift cluster into a small number of areas, each grounded in core principles that shape how decisions, coordination, ownership, and learning work in the transformed state.
+sections:
+  - type: markdown
+    data:
+      field: description
+  - type: collection-stream
+    data:
+      collection: areas
+      sort_by: title
+      reverse: false
+      excerpt_length: 220
+      card_layout: true
+      item_partial: sections/area-card.html
+...

@@ -1,0 +1,20 @@
+---
+sections:
+  - type: practitioner
+  - type: markdown
+    data:
+      field: about
+  - type: collection-stream
+    data:
+      label: "Stories"
+      content: "Training reflections"
+      collection: stories
+      sort_by: published_date
+      reverse: true
+      excerpt_length: 220
+      post_display_limit: 5
+      show_all_toggle: true
+      filter_key: practitioners
+      filter_values:
+        - "__PAGE_SLUG__"
+...

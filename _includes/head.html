@@ -1,0 +1,137 @@
+{%- comment -%} _includes/head.html {%- endcomment -%}
+<head>
+  <meta charset="utf-8">
+
+  {%- assign data = site.data.sections[page.sections_key] -%}
+
+  {%- assign raw_title = default: page.title
+    | default: data.title
+    | default: site.title -%}
+
+  {%- assign raw_desc = data.meta
+    | default: data.description
+    | default: page.meta
+    | default: page.description
+    | default: page.excerpt
+    | default: site.description
+    | default: site.title -%}
+    
+  {%- assign meta_desc = raw_desc | strip_html | strip_newlines | truncate: 160 -%}
+
+  {%- assign canonical_abs = page.url | absolute_url -%}
+  {%- assign canonical_rel = page.url | relative_url -%}
+  {%- assign is_article = page.article -%}
+
+  <title>{{ raw_title }}</title>
+  <meta name="description" content="{{ meta_desc }}">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="max-image-preview:large">
+
+  <meta property="og:type" content="{% if is_article %}article{% else %}website{% endif %}">
+  <meta property="og:title" content="{{ raw_title }}">
+  <meta property="og:description" content="{{ meta_desc }}">
+  <meta property="og:url" content="{{ canonical_abs }}">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="{{ raw_title }}">
+  <meta name="twitter:description" content="{{ meta_desc }}">
+
+  <link rel="preload" href="{{ '/assets/libs/google/fonts/afacad-v1-latin-700.woff2' | relative_url }}" crossorigin="anonymous" as="font" type="font/woff2">
+  <link rel="preload" href="{{ '/assets/libs/google/fonts/roboto-v47-latin-regular.woff2' | relative_url }}" crossorigin="anonymous" as="font" type="font/woff2">
+  <link rel="stylesheet" href="{{ '/assets/css/01-foundation.css' | relative_url }}" media="all">
+  <link rel="stylesheet" href="{{ '/assets/css/02-baseline.css' | relative_url }}" media="all">
+  <link rel="stylesheet" href="{{ '/assets/css/03-layout.css' | relative_url }}" media="all">
+  <link rel="stylesheet" href="{{ '/assets/css/04-components-1-shell.css' | relative_url }}" media="all">
+  <link rel="stylesheet" href="{{ '/assets/css/04-components-2-ui.css' | relative_url }}" media="all">
+  <link rel="stylesheet" href="{{ '/assets/css/04-components-3-content.css' | relative_url }}" media="all">
+  <link rel="stylesheet" href="{{ '/assets/css/05-pages.css' | relative_url }}" media="all">
+  <link rel="stylesheet" href="{{ '/assets/css/fontawesome.css' | relative_url }}" referrerpolicy="no-referrer">
+
+  <link rel="canonical" href="{{ canonical_rel }}">
+
+  <link rel="icon" href="{{ '/assets/favicon.png' | relative_url }}" sizes="32x32">
+  <link rel="icon" href="{{ '/assets/favicon.png' | relative_url }}" sizes="192x192">
+  <link rel="apple-touch-icon" href="{{ '/assets/favicon.png' | relative_url }}">
+  <meta name="msapplication-TileImage" content="{{ '/assets/favicon.png' | relative_url }}">
+
+  {%- if is_article -%}
+    {%- assign published_source = page.published_date | default: page.date -%}
+    {%- assign modified_source = page.refactored_date
+                                  | default: page.modified_date
+                                  | default: page.last_modified_at
+                                  | default: published_source -%}
+    {%- if published_source -%}
+      {%- assign published_iso = published_source | date_to_xmlschema -%}
+      <meta property="article:published_time" content="{{ published_iso }}">
+    {%- endif -%}
+    {%- if modified_source -%}
+      {%- assign modified_iso = modified_source | date_to_xmlschema -%}
+      <meta property="article:modified_time" content="{{ modified_iso }}">
+      <meta property="og:updated_time" content="{{ modified_iso }}">
+    {%- endif -%}
+
+    {%- assign practitioner_nodes = "" | split: "|" -%}
+    {%- assign practitioner_slugs = page.practitioners -%}
+    {%- if practitioner_slugs -%}
+      {%- assign practitioner_slugs = practitioner_slugs | array -%}
+      {%- for practitioner_slug in practitioner_slugs -%}
+        {%- assign normalized_practitioner_slug = practitioner_slug | slugify -%}
+        {%- assign matched_practitioner = nil -%}
+        {%- for practitioner in site.practitioners -%}
+          {%- assign filename = practitioner.path | split: "/" | last -%}
+          {%- assign file_slug = filename | split: "." | first | slugify -%}
+          {%- if file_slug == normalized_practitioner_slug -%}
+            {%- assign matched_practitioner = practitioner -%}
+          {%- endif -%}
+        {%- endfor -%}
+        {%- if matched_practitioner -%}
+          {%- assign practitioner_name = matched_practitioner.name
+                                        | default: matched_practitioner.title
+                                        | default: practitioner_slug -%}
+          {%- assign potential_url = matched_practitioner.url -%}
+          {%- assign practitioner_url = "" -%}
+          {%- if potential_url -%}
+            {%- if potential_url contains '://' -%}
+              {%- assign practitioner_url = potential_url -%}
+            {%- else -%}
+              {%- assign practitioner_url = potential_url | absolute_url -%}
+            {%- endif -%}
+          {%- endif -%}
+          {%- capture practitioner_json -%}{
+            "@type":"Person",
+            "name":{{ practitioner_name | jsonify }}{% if practitioner_url != "" %},
+            "url":{{ practitioner_url | jsonify }}{% endif %}
+          }{%- endcapture -%}
+          {%- assign practitioner_nodes = practitioner_nodes | push: practitioner_json -%}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endif -%}
+
+    {%- assign publisher_logo = '/assets/favicon.png' | absolute_url -%}
+    {%- capture article_json_ld -%}{
+      "@context":"https://schema.org",
+      "@type":"Article",
+      "mainEntityOfPage":{{ canonical_abs | jsonify }},
+      "headline":{{ raw_title | jsonify }},
+      "description":{{ meta_desc | jsonify }}{% if published_iso %},
+      "datePublished":"{{ published_iso }}"{% endif %}{% if modified_iso %},
+      "dateModified":"{{ modified_iso }}"{% endif %}{% if practitioner_nodes.size > 0 %},
+      "author":[{{ practitioner_nodes | join: ',' }}]{% endif %},
+      "publisher":{
+        "@type":"Organization",
+        "name":{{ site.title | default: "Mindset Dojo" | jsonify }},
+        "logo":{
+          "@type":"ImageObject",
+          "url":{{ publisher_logo | jsonify }}
+        }
+      }
+    }{%- endcapture -%}
+    <script type="application/ld+json">
+      {{ article_json_ld | strip }}
+    </script>
+  {%- endif -%}
+
+  {%- if site.google_analytics_id -%}
+    {%- include analytics.html -%}
+  {%- endif -%}
+</head>

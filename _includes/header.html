@@ -1,0 +1,38 @@
+{%- assign current_norm = page.url | replace:'/index.html','/' | relative_url | append:'/' | replace:'//','/' -%}
+{%- assign home_path = '/' | relative_url -%}
+{%- assign home_norm = home_path | append:'/' | replace:'//','/' -%}
+
+<header class="site-header" role="banner">
+    {%- if current_norm == home_norm -%}
+        <a href="{{ home_path }}" aria-current="page">
+            <img
+                src="{{ '/assets/mindset-dojo-logo.png' | relative_url }}"
+                alt="Mindset Dojo Logo"
+                width="292" height="80"
+                decoding="async"
+                fetchpriority="high">
+        </a>
+    {%- else -%}
+        <a href="{{ home_path }}">
+            <img
+                src="{{ '/assets/mindset-dojo-logo.png' | relative_url }}"
+                alt="Mindset Dojo Logo"
+                width="292" height="80"
+                decoding="async"
+                fetchpriority="high">
+        </a>
+    {%- endif -%}
+
+    <nav id="Menu" role="navigation" aria-label="Primary">
+        <ul role="menu">
+            {% include nav-items.html items=site.header_links current_norm=current_norm %}
+        </ul>
+
+        <button aria-label="Menu Toggle" aria-expanded="false" aria-controls="Menu" aria-haspopup="true">
+            <span class="bar bar1"></span>
+            <span class="bar bar2"></span>
+            <span class="bar bar3"></span>
+            <span class="bar bar4"></span>
+        </button>
+    </nav>
+</header>

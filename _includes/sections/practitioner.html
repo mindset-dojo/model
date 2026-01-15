@@ -1,0 +1,87 @@
+{%- comment -%}
+practitioner card within section
+
+Expects:
+  - include.practitioner → profile object
+Notes:
+  - Still uses site.data.progression.levels to render the level icon color/label.
+  - Still uses icons from /_includes/icons/*.svg (same paths as before).
+This file now guards the markup with `if include.practitioner` so it won't error
+if called without a practitioner object.
+{%- endcomment -%}
+
+{% assign practitioner = include.item | default: include.practitioner %}
+
+<section class="md-card md-practitioner-card">
+  {% assign practitioner_slug = practitioner.slug | to_s | strip | slugify %}
+  {% assign practitioner_name = practitioner.name | default: "Practitioner" %}
+  {% assign profile_url = '/practitioners/' | append: practitioner_slug | append: '/' | relative_url %}
+  {% assign icon_class = practitioner.icon | default: practitioner.fa_icon | default: "fa-solid fa-user" %}
+  {% assign icon_class = icon_class | strip %}
+  {%- unless icon_class contains 'fa-solid' or icon_class contains 'fa-regular' or icon_class contains 'fa-brands' -%}
+    {%- assign icon_class = "fa-solid " | append: icon_class -%}
+  {%- endunless -%}
+
+  {% assign progression_data = site.data.sections.progression | default: {} %}
+  {% assign level_defaults = progression_data.level_defaults | default: {} %}
+  {% assign unranked_label = level_defaults.unranked_label | default: "Unranked" %}
+  {% assign progression_level_items = progression_data.sections | where: "type", "levels" | map: "data" | map: "items" | first %}
+  {% assign level_label = "" %}
+  {% assign level_color = "" %}
+  {% if practitioner.progression_level != nil and practitioner.progression_level != "" and practitioner.progression_level != "null" %}
+    {% assign progression_level = practitioner.progression_level | plus: 0 %}
+    {% assign level = progression_level_items | where: "level", progression_level | first %}
+    {% if level %}
+      {% assign level_label = level.intention | default: level.label | default: unranked_label %}
+      {% assign level_color = level.color | default: "" %}
+    {% else %}
+      {% assign level_label = unranked_label %}
+    {% endif %}
+  {% endif %}
+
+  <div class="practitioner-card-icon" aria-hidden="true">
+    <i class="{{ icon_class }}"></i>
+  </div>
+
+  <h2><a href="{{ profile_url }}">{{ practitioner_name }}</a></h2>
+
+  {%- assign title_value = practitioner.title | to_s | strip -%}
+  {%- assign title_mark_value = practitioner.title_mark | to_s | strip -%}
+  {%- assign has_title = title_value != "" and title_value != "null" -%}
+  {%- assign has_title_mark = title_mark_value != "" and title_mark_value != "null" -%}
+  {%- if has_title or has_title_mark -%}
+    {%- capture title_rendered -%}
+      {%- if has_title_mark -%}
+        {%- capture mark_html -%}<mark>{{ title_mark_value }}</mark>{%- endcapture -%}
+        {%- if has_title -%}
+          {%- assign replaced = title_value | replace_first: title_mark_value, mark_html -%}
+          {%- if replaced == title_value -%}
+            {{ title_value }} {{ mark_html }}
+          {%- else -%}
+            {{ replaced }}
+          {%- endif -%}
+        {%- else -%}
+          {{ mark_html }}
+        {%- endif -%}
+      {%- else -%}
+        {{ title_value }}
+      {%- endif -%}
+    {%- endcapture -%}
+    <p class="practitioner-card-title">{{ title_rendered | strip }}</p>
+  {%- endif -%}
+
+  {%- if practitioner.progression_level -%}
+    <div class="md-group">
+      {%- if practitioner.progression_level -%}
+        {% include icons/level.svg
+          class="md-level-svg"
+          color=level_color
+          title=level_label %}
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+
+  {%- if level_label != "" -%}
+    <p class="practitioner-card-level">{{ level_label }}</p>
+  {%- endif -%}
+</section>

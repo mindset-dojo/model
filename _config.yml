@@ -1,0 +1,77 @@
+---
+title: Mindset Dojo
+
+google_analytics_id: G-7PD1BFF7RG
+
+collections:
+  practitioners:
+    output: true
+    permalink: /practitioners/:name/
+  stories:
+    output: true
+    permalink: /stories/:slug/
+  practices:
+    output: true
+    permalink: /practices/:slug/
+  areas:
+    output: true
+    permalink: /areas/:slug/
+
+defaults:
+  - scope:
+      path: ""
+      type: stories
+    values:
+      article: true
+  - scope:
+      path: ""
+      type: practices
+    values:
+      article: true
+
+action_links:
+  practices: /practices/
+  practitioners: /practitioners/
+  connect: /connect/
+  progression: /progression/
+  welcome: /welcome/
+
+header_links:
+  - label: HOME
+    href: /
+  - label: PRACTICES
+    href: /practices/
+  - label: PROGRESSION
+    href: /progression/
+  - label: PRACTITIONERS
+    href: /practitioners/
+
+footer_primary_links:
+  - label: HOME
+    href: /
+  - label: PROGRESSION
+    href: /progression/
+  - label: PRACTICES
+    href: /practices/
+  - label: PRACTITIONERS
+    href: /practitioners/
+  - label: CONNECT
+    href: /connect/
+
+footer_secondary_links:
+  - label: Privacy Policy
+    href: /privacy/
+  - label: Open Source License
+    href: /license/
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor/
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/
+  - .github/
+...

@@ -1,0 +1,76 @@
+---
+title: Progression
+title_mark: Progression
+meta: How integration and stewardship deepen over time during the transformation
+description: |
+  Progression makes visible how relationship to the transformation deepens as it moves from idea into lived practice. 
+  
+  It serves as a shared reference for recognizing readiness, responsibility, and stewardship as practitioners integrate the work and begin supporting others under real constraints.
+level_defaults:
+  unranked_label: "White Belt"
+  unranked_color: "white"
+sections:
+  - type: markdown
+    data:
+      field: description
+  - type: levels
+    data:
+      label: "Levels"
+      level_filter: true
+      items:
+        - color: white
+          label: White Belt
+          level: -7
+          intention: Awareness
+          relationship: Beginning to orient to the transformation and its practices
+          signal: Curiosity, observation, and willingness to engage
+          responsibility: Listening, reflecting, and noticing how work is changing
+
+        - color: yellow
+          label: Yellow Belt
+          level: -6
+          intention: Orientation
+          relationship: Actively making sense of principles and practices
+          signal: Asking questions and beginning to experiment safely
+          responsibility: Trying practices locally and reflecting on outcomes
+
+        - color: green
+          label: Green Belt
+          level: -5
+          intention: Application
+          relationship: Applying practices in real work with growing consistency
+          signal: Practices are visible in day-to-day decisions
+          responsibility: Integrating practices within a local context
+
+        - color: blue
+          label: Blue Belt
+          level: -4
+          intention: Integration
+          relationship: Sustained integration across situations and constraints
+          signal: Others recognize patterns of practice and learning
+          responsibility: Sharing learning and supporting integration beyond self
+
+        - color: purple
+          label: Purple Belt
+          level: -3
+          intention: Collaboration
+          relationship: Coordinating practice across people and teams
+          signal: Trusted contributor in cross-boundary work
+          responsibility: Helping align practices across contexts
+
+        - color: brown
+          label: Brown Belt
+          level: -2
+          intention: Stewarding Integration
+          relationship: Carrying responsibility for others’ integration
+          signal: Others seek guidance and support
+          responsibility: Supporting readiness, pacing, and coherence
+
+        - color: black
+          label: Black Belt
+          level: 1
+          intention: Stewardship
+          relationship: Commitment to sustaining the transformation over time
+          signal: Trusted holder of principles, practices, and tone
+          responsibility: Protecting coherence, mentoring practitioners, and tending the Dojo
+...

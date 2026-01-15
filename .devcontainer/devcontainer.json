@@ -1,0 +1,24 @@
+{
+  "name": "Jekyll Codespace",
+  "image": "mcr.microsoft.com/devcontainers/ruby:3.2",
+  "forwardPorts": [4000],
+  "containerEnv": {
+    "BUNDLE_PATH": "vendor/bundle"
+  },
+  "mounts": [
+    "source=bundle-cache,target=${containerWorkspaceFolder}/vendor/bundle,type=volume"
+  ],
+  "postCreateCommand": "bundle install",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "liquid.engine": "jekyll"
+      },
+      "extensions": [
+        "shopify.ruby-lsp",
+        "sissel.shopify-liquid"
+      ]
+    }
+  }
+}

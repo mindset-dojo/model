@@ -1,0 +1,34 @@
+{%- comment -%} _layouts/default.html {%- endcomment -%}
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: site.lang | default: 'en' }}">
+{% include head.html %}
+<body id="{{ page.css_id }}">
+  {% include header.html %}
+
+  <main aria-label="Content">
+    {%- assign data = site.data.sections[page.sections_key] -%}
+
+    {%- assign base_h1     = page.title
+                               | default: data.title
+                               | default: site.title -%}
+    {%- assign h1_mark_val = page.title_mark
+                               | default: page.title_mark
+                               | default: data.title_mark -%}
+
+    {%- if base_h1 -%}
+      {%- if h1_mark_val -%}
+        {%- capture marked -%}<mark>{{ h1_mark_val }}</mark>{%- endcapture -%}
+        {%- assign h1_rendered = base_h1 | replace_first: h1_mark_val, marked -%}
+      {%- else -%}
+        {%- assign h1_rendered = base_h1 -%}
+      {%- endif -%}
+      <h1>{{ h1_rendered }}</h1>
+      <hr>
+    {%- endif -%}
+
+    {{ content }}
+  </main>
+
+  {% include footer.html %}
+</body>
+</html>

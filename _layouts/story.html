@@ -1,0 +1,21 @@
+---
+layout: post
+---
+
+{{ content }}
+
+{% if page.practices %}
+  {% assign related_practices_id = page.slug | default: page.title | slugify | append: "-related-practices" %}
+  {% include sections/collection-stream.html
+    section=section
+    collection="practices"
+    filter_key="practices"
+    filter_values=page.practices
+    label="Related Practices"
+    show_hr=true
+    card_layout=true
+    item_partial="sections/practice-card.html"
+    related_toggle=true
+    related_toggle_id=related_practices_id
+  %}
+{% endif %}

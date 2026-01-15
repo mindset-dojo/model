@@ -1,0 +1,24 @@
+---
+layout: post
+---
+
+{% include sections/card-grid.html
+  item=page
+  total_count=1
+  item_partial="sections/practice-card.html" %}
+
+{{ content }}
+
+{% assign related_stories_id = page.slug | default: page.title | slugify | append: "-related-stories" %}
+{% include sections/collection-stream.html
+  section=section
+  collection="stories"
+  filter_key="practices"
+  filter_values=page.slug
+  post_display_limit=5
+  show_all_toggle=true
+  label="Related Stories"
+  show_hr=true
+  related_toggle=true
+  related_toggle_id=related_stories_id
+%}

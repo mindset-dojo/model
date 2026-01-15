@@ -1,0 +1,60 @@
+---
+layout: default
+---
+
+<article class="post-article" itemscope itemtype="https://schema.org/Article">
+    
+  <div class="post-body" itemprop="articleBody">
+    {{ content }}
+  </div>
+
+  {%- if page.areas -%}
+    {%- assign area_slugs = page.areas | array -%}
+    {%- assign area_docs = "" | split: "|" -%}
+    {%- for area_slug in area_slugs -%}
+      {%- assign area_doc = site.areas | where: "slug", area_slug | first -%}
+      {%- if area_doc == nil -%}
+        {%- assign area_doc = site.areas | where: "title", area_slug | first -%}
+      {%- endif -%}
+      {%- if area_doc -%}
+        {%- assign area_docs = area_docs | push: area_doc -%}
+      {%- endif -%}
+    {%- endfor -%}
+    {%- assign area_toggle_base = page.slug | default: page.title | default: page.url | default: "areas" -%}
+    {%- assign area_toggle_id = area_toggle_base | append: "-areas" | slugify -%}
+    <hr>
+    <section class="md-flow area-section" data-related-toggle="true">
+      <h2>Related Areas</h2>
+      {% include components/related-toggle-button.html target_id=area_toggle_id show_label="Show" hide_label="Hide" %}
+      <div
+        id="{{ area_toggle_id }}"
+        class="area-list-wrap"
+        data-related-toggle-content
+        hidden>
+        {% include sections/card-grid.html
+          items=area_docs
+          item_partial="sections/area-card.html"
+          total_count=area_docs.size %}
+      </div>
+    </section>
+  {%- endif -%}
+
+  <hr>
+
+  <p class="post-meta">
+    Originally published {{ page.published_date | date: "%B %-d, %Y" }} <br>
+    Last refactored {{ page.refactored_date | date: "%B %-d, %Y" }}
+  </p>
+
+  <hr>
+
+  {%- unless page.collection == "practices" -%}
+    <p class="post-practitioners">
+      {%- assign practitioners_list = page.practitioners -%}
+      {%- if practitioners_list -%}
+        {% include sections/practitioners.html practitioners=practitioners_list %}
+      {%- endif -%}
+    </p>
+  {%- endunless -%}
+
+</article>
