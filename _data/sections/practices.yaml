@@ -18,4 +18,3 @@ sections:
       excerpt_length: 220
       card_layout: true
       item_partial: sections/area-card.html
-...

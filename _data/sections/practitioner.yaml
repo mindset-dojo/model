@@ -17,4 +17,3 @@ sections:
       filter_key: practitioners
       filter_values:
         - "__PAGE_SLUG__"
-...
